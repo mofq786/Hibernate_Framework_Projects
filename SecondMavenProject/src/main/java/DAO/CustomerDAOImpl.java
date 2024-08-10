@@ -242,7 +242,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		try {
 			List<Customer> customer = (List<Customer>)query.getResultList();
 			
-			for(Customer cust : customer)
+			for(Customer cust : customer) 
 			{
 				System.out.println(cust);
 			}
