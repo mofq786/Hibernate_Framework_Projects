@@ -5,8 +5,6 @@ import java.util.Scanner;
 import com.jsp.DAO.BankDAO;
 import com.jsp.DAO.BankDAOImpl;
 import com.jsp.entity.UserInformation;
-import com.jsp.service.BankCustomerService;
-import com.jsp.service.BankCustomerServiceImpl;
 
 /**
  * Hello world!
@@ -25,11 +23,10 @@ public class App
         	System.out.println("\nEnter Any choice below.\n 1. User Registration\n 2. User Login\n 3. Exit");
         	int choice = sc.nextInt();
         	BankDAO bankDAO = new BankDAOImpl();
-        	BankCustomerService bankCustomerService = new BankCustomerServiceImpl();
         	switch(choice)
         	{
         		case 1:{
-        			if(bankCustomerService.BankCustomerDetails())
+        			if(bankDAO.insertBankCustomerDetails())
         			{
         				System.out.println("------ Registration Successfull ------");
         			}
@@ -41,7 +38,14 @@ public class App
         		
         		case 2:{
         			
-        			UserInformation userInformation = bankCustomerService.customerLogin();
+        			System.out.println("Enter Login Credentials\n");
+        			
+        			System.out.print("\nEnter Email Id: ");
+        			String emailId = sc.next();
+        			System.out.print("\nEnter Password: ");
+        			String password = sc.next();
+        			
+        			UserInformation userInformation = bankDAO.searchUserAccountDetailsByUsingMobileAndPassword(emailId, password);
         			
         			if(userInformation != null)
         			{
@@ -50,7 +54,7 @@ public class App
         				
         				while(loginStatus)
         				{
-        					System.out.println("\nEnter Choice Options to perform operations\n  1.Credit Amount\n  2.Debit Amount\n  3.Change Password\n4.  4.Log-out\n");
+        					System.out.println("\nEnter Choise Options to perform operations\n  1.Credit Amount\n  2.Debit Amount\n  3.Change Password\n4.  4.Log-out\n");
         					int select = sc.nextInt();
         					double balance = userInformation.getAmount();
         					
@@ -131,7 +135,7 @@ public class App
         				System.out.println("\nNo Details found...");
         			}
             		
-        		} 
+        		}
         		break;
         		
         		case 3:{

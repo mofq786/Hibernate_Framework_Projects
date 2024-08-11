@@ -1,13 +1,10 @@
 package com.jsp.entity;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -25,8 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user_information")
-@NamedQuery(name="selectCustomerByUsingEmailandPassword",
-		query="select userInfo from UserInformation userInfo where userInfo.email_id=:email and userInfo.password=:password")
+
 public class UserInformation {
 	
 	@Id
@@ -37,7 +33,7 @@ public class UserInformation {
 	@Column(nullable=false)
 	private String last_name;
 	@Column(nullable=false)
-	private LocalDate date_of_birth;
+	private String date_of_birth;
 	@Column(nullable=false, length=45,unique=true)
 	private String email_id;
 	@Column(nullable=false, length=45,unique=true)
@@ -50,7 +46,5 @@ public class UserInformation {
 	private double amount;
 	@Column(nullable=false)
 	private String gender;
-	
-	
 	
 }

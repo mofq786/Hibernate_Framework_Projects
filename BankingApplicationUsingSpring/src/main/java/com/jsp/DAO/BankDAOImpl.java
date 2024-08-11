@@ -1,5 +1,6 @@
 package com.jsp.DAO;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.persistence.EntityManager;
@@ -15,20 +16,69 @@ public class BankDAOImpl implements BankDAO {
 	private final static String update = "update UserInformation userInfo set userInfo.amount =:amount where userInfo.email_id=:email and userInfo.password=:password";
 
 	@Override
-	public int insertBankCustomerDetails(UserInformation userInformation) {
+	public boolean insertBankCustomerDetails() {
 		Scanner scan = new Scanner(System.in);
 		
 		EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("BankingApplication");
 		EntityManager manager = managerFactory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
-	
-		manager.persist(userInformation);
-		transaction.commit();
+		
+		UserInformation userInformation = new UserInformation();
+		
+		System.out.println("Enter First Name: ");
+		String firstName = scan.next();
+		userInformation.setFirst_name(firstName);
+		
+		System.out.println("Enter Last Name: ");
+		String lastName = scan.next();
+		userInformation.setLast_name(lastName);
+		
+		System.out.println("Enter Your Date Of Birth: ");
+		String dateOfBirth = scan.next();
+		userInformation.setDate_of_birth(dateOfBirth);
+		
+		System.out.println("Enter Gender: ");
+		String gender = scan.next();
+		userInformation.setGender(gender);
+		
+		System.out.println("Enter Email Id: ");
+		String emailId = scan.next();
+		userInformation.setEmail_id(emailId);
+		
+		System.out.println("Enter Password: ");
+		String password = scan.next();
+		userInformation.setPassword(password);
+		
+		System.out.println("Enter Mobile Number");
+		long mobile = scan.nextLong();
+		userInformation.setMobile_number(mobile);
+		
+		System.out.println("Enter Amount to Deposit: ");
+		double amount = scan.nextDouble();
+		userInformation.setAmount(amount);
+		
+		Random random = new Random();
+		int number = random.nextInt(1000000);
+		if(number < 100000)
+		{
+			number += 100000;
+		}
+		
+		userInformation.setAccount_number(number);
+		
+		try {
+			manager.persist(userInformation);
+			transaction.commit();
 			
-		manager.close();
-		managerFactory.close();
-		return userInformation.getAccount_number();
+			manager.close();
+			managerFactory.close();
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 		
 	}
 
@@ -144,23 +194,19 @@ public class BankDAOImpl implements BankDAO {
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		
-		Query query = manager.createNamedQuery(password);
+		String select = "select userInfo from UserInformation userInfo where userInfo.email_id=:email and userInfo.password=:password";
+		
+		Query query = manager.createQuery(select);
 		
 		query.setParameter("email", email);
 		query.setParameter("password", password);
 		
-		try {
-			UserInformation userInformation = (UserInformation) query.getSingleResult();
-			
-			manager.close();
-			managerFactory.close();
-			
-			return userInformation;
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
+		UserInformation userInformation = (UserInformation) query.getSingleResult();
+		
+		manager.close();
+		managerFactory.close();
+		
+		return userInformation;
 	}
 
 }
