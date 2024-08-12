@@ -46,7 +46,7 @@ public class App
         				
         				while(loginStatus)
         				{
-        					System.out.println("\nEnter Choice Options to perform operations\n  1.Credit Amount\n  2.Debit Amount\n  3.Change Password\n4.  4.Log-out\n");
+        					System.out.println("\nEnter Choice Options to perform operations\n  1.Credit Amount\n  2.Debit Amount\n  3.Change Password\n  4.Log-out\n");
         					int select = sc.nextInt();
         	
         					switch(select)
@@ -102,8 +102,6 @@ public class App
         }
         
         System.out.println("*********======= Thank you for using my application =======**********");
-        
-        sc.close();
         
     }
 }

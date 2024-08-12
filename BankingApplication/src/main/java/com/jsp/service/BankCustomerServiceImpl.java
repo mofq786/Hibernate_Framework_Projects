@@ -107,7 +107,7 @@ public class BankCustomerServiceImpl implements BankCustomerService {
 		
 		System.out.println("Year: ");
 		int year = scan.nextInt();
-		while(year < 1 || year > 31)
+		while(year < 1900 || year > 2005)
 		{
 			System.err.println("Enter Valid Year: ");
 			year = scan.nextInt();

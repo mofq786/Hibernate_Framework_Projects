@@ -12,8 +12,6 @@ import com.jsp.entity.UserInformation;
 
 public class BankDAOImpl implements BankDAO {
 	
-	private final static String update = "update UserInformation userInfo set userInfo.amount =:amount where userInfo.email_id=:email and userInfo.password=:password";
-
 	@Override
 	public int insertBankCustomerDetails(UserInformation userInformation) {
 		Scanner scan = new Scanner(System.in);
@@ -41,7 +39,7 @@ public class BankDAOImpl implements BankDAO {
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		
-			Query query = manager.createQuery(update);
+			Query query = manager.createQuery("updateAmountInAccount");
 			String email =userInformation.getEmail_id();
 			String password = userInformation.getPassword();
 			
@@ -75,7 +73,7 @@ public class BankDAOImpl implements BankDAO {
 		transaction.begin();
 		
 		
-		Query query = manager.createNamedQuery("updateAmountInAccount");
+		Query query = manager.createNamedQuery("changePassword");
 		String email =userInformation.getEmail_id();
 		String oldPassword = userInformation.getPassword();
 		
@@ -108,7 +106,7 @@ public class BankDAOImpl implements BankDAO {
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		
-		Query query = manager.createNamedQuery(password);
+		Query query = manager.createNamedQuery("selectCustomerByUsingEmailandPassword");
 		
 		query.setParameter("email", email);
 		query.setParameter("password", password);

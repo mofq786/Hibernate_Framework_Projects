@@ -29,7 +29,8 @@ import lombok.NoArgsConstructor;
 @NamedQuery(name="selectCustomerByUsingEmailandPassword",
 		query="select userInfo from UserInformation userInfo where userInfo.email_id=:email and userInfo.password=:password")
 @NamedQueries({@NamedQuery(name = "updateAmountInAccount", 
-							query="update UserInformation userInfo set userInfo.amount =:amount where userInfo.email_id=:email and userInfo.password=:password")})
+							query="update UserInformation userInfo set userInfo.amount =:amount where userInfo.email_id=:email and userInfo.password=:password"),
+				@NamedQuery(name="changePassword", query="update UserInformation userInfo set userInfo.password=:newpassword where userInfo.email_id=:email and userInfo.password=:password")})
 
 
 public class UserInformation {
