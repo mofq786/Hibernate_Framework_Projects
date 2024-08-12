@@ -12,6 +12,7 @@ public class BankCustomerServiceImpl implements BankCustomerService {
 	
 	Scanner scan = new Scanner(System.in);
 	BankDAO bankDAO = new BankDAOImpl();
+	UserInformation userInformation;
 	@Override
 	public boolean BankCustomerDetails() {
 		
@@ -21,31 +22,42 @@ public class BankCustomerServiceImpl implements BankCustomerService {
 		System.out.println("Enter First Name: ");
 		String firstName = scan.next();
 		
-		outer: while(valid)
+		while(valid)
 		{
 			if(firstName == null)
 			{
+				System.err.println("Enter Valid Name: ");
 				firstName = scan.next();
 				continue;
 			}
+			int count = 0;
 			for(int i=0;i<firstName.length();i++)
 			{
 				char ch = firstName.charAt(i);
-				if(Character.isDigit(ch))
+				if(Character.isAlphabetic(ch))
 				{
-					firstName = scan.next();
-					continue outer;
+					count++;
 				}
 			}
 			
-			valid = false;
+			if(firstName.length() == count)
+			{
+				valid = false;
+			}
+			else
+			{
+				System.err.println("Enter Valid Name: ");
+				firstName = scan.next();
+				continue;
+			}
+		
 		}
 		userInformation.setFirst_name(firstName);
 		
 		System.out.println("Enter Last Name: ");
 		String lastName = scan.next();
 		valid = true;
-		outer: while(valid)
+		while(valid)
 		{
 			if(lastName == null)
 			{
@@ -53,18 +65,26 @@ public class BankCustomerServiceImpl implements BankCustomerService {
 				lastName = scan.next();
 				continue;
 			}
+			int count = 0;
 			for(int i=0;i<lastName.length();i++)
 			{
 				char ch = lastName.charAt(i);
-				if(Character.isDigit(ch))
+				if(Character.isAlphabetic(ch))
 				{
-					System.err.println("Enter Valid First Name: ");
-					lastName = scan.next();
-					continue outer;
+					count++;
 				}
 			}
 			
-			valid = false;
+			if(lastName.length() == count)
+			{
+				valid = false;
+			}
+			else
+			{
+				System.err.println("Enter Valid Name: ");
+				lastName = scan.next();
+				continue;
+			}
 		}
 		userInformation.setLast_name(lastName);
 		
@@ -159,17 +179,94 @@ public class BankCustomerServiceImpl implements BankCustomerService {
 		System.out.print("\nEnter Password: ");
 		String password = scan.next();
 		
-	
-			UserInformation userInformation = bankDAO.searchUserAccountDetailsByUsingMobileAndPassword(emailId, password);
+		try {
 			
-			
-			return userInformation;
-//		}
-//		catch(Exception e)
-//		{
-//			return null;
-//		}
-//		
+			userInformation = bankDAO.searchUserAccountDetailsByUsingMobileAndPassword(emailId, password);
+			return userInformation;	
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 		
+		
+	}
+	@Override
+	public void debit() {
+		System.out.println("Enter Amount to Debit from Account");
+		double debitAmount = scan.nextDouble();
+		
+		if(debitAmount>=0)
+		{
+			double databaseAmount = userInformation.getAmount();
+			if(databaseAmount >= debitAmount)
+			{
+				double balance = databaseAmount - debitAmount;
+				if(bankDAO.updateAmountInAccount(userInformation, balance))
+				{
+					userInformation.setAmount(balance);
+					System.out.println("Amount successfully debited from the account.");
+				}
+				else
+				{
+					System.err.println("Transaction Failed");
+				}
+			}
+			else
+			{
+				System.err.println("Insufficient Balance");
+			}
+		}
+	}
+	@Override
+	public void credit() {
+		
+		System.out.println("Enter Amount to Credit to Account");
+		double creditAmount = scan.nextDouble();
+		
+		if(creditAmount>=0)
+		{
+			double balance = userInformation.getAmount()+creditAmount;
+			if(bankDAO.updateAmountInAccount(userInformation, balance))
+			{
+				userInformation.setAmount(balance);
+				System.out.println("Amount successfully Credited to the account.");
+			}
+			else
+			{
+				System.err.println("Transaction Failed");
+			}
+		}
+		
+	}
+	@Override
+	public void changePassword() {
+		
+		System.out.println("Enter New Password");
+		String newPassword = scan.next();
+		
+		if(newPassword.length()==4)
+		{
+			String oldPassword = userInformation.getPassword();
+			if(!newPassword.equals(oldPassword))
+			{
+				if(bankDAO.changePasswordByUsingId(userInformation, newPassword))
+				{
+					System.out.println("Password Changed Succesfully");
+				}
+				else
+				{
+					System.err.println("Transaction Failed");
+				}
+			}
+			else
+			{
+				System.err.println("Password should not be same as previous password");
+			}
+		}
+		else 
+		{
+			System.err.println("Invalid Password");
+		}
 	}
 }

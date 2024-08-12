@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -27,6 +28,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_information")
 @NamedQuery(name="selectCustomerByUsingEmailandPassword",
 		query="select userInfo from UserInformation userInfo where userInfo.email_id=:email and userInfo.password=:password")
+@NamedQueries({@NamedQuery(name = "updateAmountInAccount", 
+							query="update UserInformation userInfo set userInfo.amount =:amount where userInfo.email_id=:email and userInfo.password=:password")})
+
+
 public class UserInformation {
 	
 	@Id

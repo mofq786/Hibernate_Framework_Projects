@@ -1,9 +1,6 @@
 package com.jsp;
 
 import java.util.Scanner;
-
-import com.jsp.DAO.BankDAO;
-import com.jsp.DAO.BankDAOImpl;
 import com.jsp.entity.UserInformation;
 import com.jsp.service.BankCustomerService;
 import com.jsp.service.BankCustomerServiceImpl;
@@ -24,7 +21,6 @@ public class App
         {
         	System.out.println("\nEnter Any choice below.\n 1. User Registration\n 2. User Login\n 3. Exit");
         	int choice = sc.nextInt();
-        	BankDAO bankDAO = new BankDAOImpl();
         	BankCustomerService bankCustomerService = new BankCustomerServiceImpl();
         	switch(choice)
         	{
@@ -52,65 +48,25 @@ public class App
         				{
         					System.out.println("\nEnter Choice Options to perform operations\n  1.Credit Amount\n  2.Debit Amount\n  3.Change Password\n4.  4.Log-out\n");
         					int select = sc.nextInt();
-        					double balance = userInformation.getAmount();
-        					
+        	
         					switch(select)
         					{
         						case 1:{
-        							System.out.println("Enter Amount to Credit into Account");
-        							double creditAmount = sc.nextDouble();
-        						
-        							if(bankDAO.creditAmountInAccount(userInformation, balance+creditAmount))
-        							{
-        								System.out.println("Amount successfully credited into the account.");
-        							}
-        							else
-        							{
-        								System.err.println("Transaction Failed");
-        							}
         							
+        							bankCustomerService.credit();
         						}
         						break;
         						
         						case 2:{
         							
-        							System.out.println("Enter Amount to Debit from Account");
-        							double debitAmount = sc.nextDouble();
-        							
-        							if(balance >= debitAmount)
-        							{
-        								if(bankDAO.debitAmountFromAccount(userInformation, balance-debitAmount))
-            							{
-            								System.out.println("Amount successfully debited from the account.");
-            							}
-            							else
-            							{
-            								System.err.println("Transaction Failed");
-            							}
-        							}
-        							else
-        							{
-        								System.err.println("Insufficient Balance");
-        							}
-        							
-        		
+        							bankCustomerService.debit();
         							
         						}
         						break;
         						
         						case 3:{
         							
-        							System.out.println("Enter New Password");
-        							String newPassword = sc.next();
-        							
-        							if(bankDAO.changePasswordByUsingId(userInformation, newPassword))
-        							{
-        								System.out.println("Password Changed Succesfully");
-        							}
-        							else
-        							{
-        								System.err.println("Transaction Failed");
-        							}
+        							bankCustomerService.changePassword();
         						}
         						break;
         						
@@ -146,6 +102,8 @@ public class App
         }
         
         System.out.println("*********======= Thank you for using my application =======**********");
+        
+        sc.close();
         
     }
 }

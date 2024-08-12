@@ -28,46 +28,13 @@ public class BankDAOImpl implements BankDAO {
 			
 		manager.close();
 		managerFactory.close();
+		scan.close();
 		return userInformation.getAccount_number();
 		
 	}
 
 	@Override
-	public boolean creditAmountInAccount(UserInformation userInformation, double creditAmount) {
-		
-		EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("BankingApplication");
-		EntityManager manager = managerFactory.createEntityManager();
-		EntityTransaction transaction = manager.getTransaction();
-		transaction.begin();
-		
-			Query query = manager.createQuery(update);
-			String email =userInformation.getEmail_id();
-			String password = userInformation.getPassword();
-			
-			query.setParameter("email", email);
-			query.setParameter("password", password);
-			query.setParameter("amount", creditAmount);
-			
-			int result = query.executeUpdate();
-			transaction.commit();
-			manager.close();
-			managerFactory.close();
-			
-			if(result != 0)
-			{
-				userInformation.setAmount(creditAmount);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-			
-		
-	}
-
-	@Override
-	public boolean debitAmountFromAccount(UserInformation userInformation, double debitAmount) {
+	public boolean updateAmountInAccount(UserInformation userInformation, double balance) {
 
 		EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("BankingApplication");
 		EntityManager manager = managerFactory.createEntityManager();
@@ -80,7 +47,7 @@ public class BankDAOImpl implements BankDAO {
 			
 			query.setParameter("email", email);
 			query.setParameter("password", password);
-			query.setParameter("amount", debitAmount);
+			query.setParameter("amount", balance);
 			
 			int result = query.executeUpdate();
 			transaction.commit();
@@ -89,7 +56,6 @@ public class BankDAOImpl implements BankDAO {
 			
 			if(result != 0)
 			{
-				userInformation.setAmount(debitAmount);
 				return true;
 			}
 			else
@@ -108,10 +74,8 @@ public class BankDAOImpl implements BankDAO {
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		
-		String update_password = "update UserInformation userInfo set userInfo.password =:newpassword where userInfo.email_id=:email and userInfo.password=:password";
-	
 		
-		Query query = manager.createQuery(update_password);
+		Query query = manager.createNamedQuery("updateAmountInAccount");
 		String email =userInformation.getEmail_id();
 		String oldPassword = userInformation.getPassword();
 		
