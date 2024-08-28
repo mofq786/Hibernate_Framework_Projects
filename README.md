@@ -12,7 +12,6 @@ This repository contains two separate applications developed using Maven and Hib
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Database Configuration](#database-configuration)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -35,70 +34,49 @@ This repository contains two separate applications developed using Maven and Hib
 - **Java** - Programming language used for development.
 - **Maven** - Build automation tool for managing dependencies and project structure.
 - **Hibernate** - ORM (Object-Relational Mapping) framework for database operations.
-- **MySQL/PostgreSQL** - Database management system (replace with your specific DBMS).
-- **JUnit** - Testing framework for unit tests.
-- **Spring** (if applicable) - For dependency injection and management (if used in your project).
+- **MySQL** - Relational Database management system.
 
 ## Installation
 
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/mofq786/Hibernate_Framework_Projects.git
-Navigate to the Project Directory
+   
+2. **Navigate to the Project Directory**
+   ```bash
+   cd Hibernate_Framework_Project
+3. **Build the Project**
+   ```bash
+   mvn clean install
+## Database Configuration
+- Database Setup
+     - Ensure your database is running and accessible.
+     - Update the JPA configuration in the persistence.xml file or equivalent configuration files in your project.
+- JPA Configuration
+     - Configuration in `src/main/resources/META-INF/persistence.xml`:
+       ```bash
+       <?xml version="1.0" encoding="UTF-8"?>
+       <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi=
+       "http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+       http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	   <persistence-unit name="BankingApplication" transaction-type="RESOURCE_LOCAL">
+		<class>com.jsp.entity.UserInformation</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/teca6061hibernate"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="12345"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+		</properties>
+	   </persistence-unit>
+       </persistence>
+  
+## Project Structure
+- src/main/java - Contains the Java source files.
+- src/main/resources - Configuration files, including persistence.xml.
+- src/test/java - Unit tests for both applications.
 
-bash
-Copy code
-cd your-repository-name
-Build the Project
+## Contributing
+- Contributions are welcome! Please create a pull request or open an issue to discuss what you would like to change.
 
-bash
-Copy code
-mvn clean install
-Usage
-Run the Application
-
-For Banking Application:
-bash
-Copy code
-mvn exec:java -Dexec.mainClass="com.example.banking.Main"
-For Employee Management Application:
-bash
-Copy code
-mvn exec:java -Dexec.mainClass="com.example.employee.Main"
-Access the Application
-
-The applications can be accessed via the console or a web interface if applicable (update with relevant details).
-Database Configuration
-Database Setup
-
-Ensure your database is running and accessible.
-Update the JPA configuration in the persistence.xml file or equivalent configuration files in your project.
-JPA Configuration
-
-Example configuration in src/main/resources/META-INF/persistence.xml:
-xml
-Copy code
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
-    <persistence-unit name="yourPersistenceUnitName">
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>com.example.banking.Account</class>
-        <class>com.example.employee.Employee</class>
-        <properties>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/your_database"/>
-            <property name="javax.persistence.jdbc.user" value="your_username"/>
-            <property name="javax.persistence.jdbc.password" value="your_password"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.show_sql" value="true"/>
-        </properties>
-    </persistence-unit>
-</persistence>
-Project Structure
-src/main/java - Contains the Java source files.
-src/main/resources - Configuration files, including persistence.xml.
-src/test/java - Unit tests for both applications.
-Contributing
-Contributions are welcome! Please create a pull request or open an issue to discuss what you would like to change.
-
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+## License
+- This project is licensed under the MIT License - see the LICENSE file for details.
